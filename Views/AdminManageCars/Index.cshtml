@@ -1,0 +1,59 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model IEnumerable<CarTrader.Models.Car>
+
+@{
+    ViewData["Title"] = "Admin Manage Cars";
+}
+
+<table class="table table-bordered table-hover text-center mt-3">
+  <thead>
+    <tr class="text-center">
+      <th scope="col">Make</th>
+      <th scope="col">Model</th>
+      <th scope="col">Year</th>
+      <th scope="col">Price</th>
+      <th scope="col">Published At</th>
+      <th scope="col">User</th>
+      <th scope="col">Approved</th>
+      <th scope="col">Canceled</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (var item in Model) {
+    <tr>
+        <th>@Html.DisplayFor(modelItem => item.Make)</th>
+        <td>@Html.DisplayFor(modelItem => item.Model)</td>
+        <td>@Html.DisplayFor(modelItem => item.Year)</td>
+        <td>@Html.DisplayFor(modelItem => item.Price)</td>
+        <td>@Html.DisplayFor(modelItem => item.PublishedAt)</td>
+        <td>@Html.DisplayFor(modelItem => item.User.Email)</td>
+        <td class="text-center">
+            @if (item.Approved)
+            {
+                <span>&check;</span>
+            } else {
+                <span>&#10060;</span>
+            }
+        </td>
+        <td class="text-center">
+            @if (item.Canceled)
+            {
+                <span>&check;</span>
+            } else {
+                <span>&#10060;</span>
+            }
+        </td>
+        @if (!item.Canceled && !item.Approved)
+        {
+            <td><a class="btn btn-sm btn-success" asp-area="" asp-controller="AdminManageCars" asp-action="Approve" asp-route-id="@item.Id">Approve</a></td>
+        } else if (!item.Canceled && item.Approved)
+        {
+            <td><a class="btn btn-sm btn-danger" asp-area="" asp-controller="AdminManageCars" asp-action="Cancel" asp-route-id="@item.Id">Cancel</a></td>
+        }
+    </tr>
+    }
+  </tbody>
+</table>

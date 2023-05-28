@@ -4,10 +4,10 @@
 @model IEnumerable<CarTrader.Models.Car>
 
 @{
-    ViewData["Title"] = "Cars";
+    ViewData["Title"] = "Manage Cars";
 }
 
-<a class="btn btn-success btn-sm float-end" asp-area="" asp-controller="Cars" asp-action="Create">Sell Car +</a>
+<a class="btn btn-success btn-sm float-end" asp-area="" asp-controller="ManageCars" asp-action="Create">Sell Car +</a>
 <table class="table table-bordered table-hover">
   <thead>
     <tr>
@@ -27,7 +27,7 @@
         <td>@Html.DisplayFor(modelItem => item.Year)</td>
         <td>@Html.DisplayFor(modelItem => item.Price)</td>
         <td>@Html.DisplayFor(modelItem => item.PublishedAt)</td>
-        <td><a class="btn btn-sm btn-danger" asp-area="" asp-controller="Cars" asp-action="Delete" asp-route-id="@item.Id">Delete</a></td>
+        <td><a class="btn btn-sm btn-danger" asp-area="" asp-controller="ManageCars" asp-action="Delete" asp-route-id="@item.Id">Delete</a></td>
     </tr>
     }
   </tbody>
