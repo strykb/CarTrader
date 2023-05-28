@@ -18,6 +18,8 @@ namespace CarTrader.Models
         public string Model { get; set; }
         [Range(0, 999999999)]
         public int Price { get; set; }
+        [Range(1900, 2100)]
+        public int Year { get; set; }
         [NotMapped]
         [Display(Name = "Image")]
         public IFormFile ImageFile { get; set; }

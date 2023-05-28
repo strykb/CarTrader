@@ -21,6 +21,8 @@ namespace CarTrader.Models
         public string Model { get; set; }
         [Range(0, 999999999)]
         public int Price { get; set; }
+        [Range(1900, 2100)]
+        public int Year { get; set; }
         public bool Sold { get; set; } = false;
         public bool Approved { get; set; } = false;
         public bool Canceled { get; set; } = false;

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using CarTrader.Data;
 using CarTrader.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CarTrader.Controllers
 {
@@ -27,7 +28,21 @@ namespace CarTrader.Controllers
         // GET: Cars
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Car.Include(c => c.User);
+            var applicationDbContext = _context.Car.Where(
+                c =>
+                c.Sold == false
+                && c.Canceled == false
+                && c.Approved == true
+            ).Include(c => c.User);
+            return View(await applicationDbContext.ToListAsync());
+        }
+
+        // GET: Manage
+        [Authorize]
+        public async Task<IActionResult> Manage()
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var applicationDbContext = _context.Car.Where(c => c.UserId == user.Id).Include(c => c.User);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -46,23 +61,24 @@ namespace CarTrader.Controllers
             {
                 return NotFound();
             }
-
-            return View(car);
+            ViewBag.car = car;
+            return View();
         }
 
         // GET: Cars/Create
+        [Authorize]
         public IActionResult Create()
         {
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
         // POST: Cars/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Make,Model,Price, ImageFile")] CarDTO carDTO)
+        public async Task<IActionResult> Create([Bind("Id,Make,Model,Price, Year, ImageFile")] CarDTO carDTO)
         {
             // get user
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
@@ -98,6 +114,7 @@ namespace CarTrader.Controllers
         }
 
         // GET: Cars/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Car == null)
@@ -105,23 +122,25 @@ namespace CarTrader.Controllers
                 return NotFound();
             }
 
-            var car = await _context.Car.FindAsync(id);
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var car = await _context.Car.FirstOrDefaultAsync(c => c.Id == id && c.UserId == user.Id);
             if (car == null)
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", car.UserId);
             return View(car);
         }
 
         // POST: Cars/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,PublishedAt,SoldAt,Make,Model,Price,Sold,Approved,Canceled")] Car car)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Make,Model,Price,Sold")] Car car)
         {
-            if (id != car.Id)
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            if (id != car.Id || car.UserId != user.Id)
             {
                 return NotFound();
             }
@@ -146,21 +165,20 @@ namespace CarTrader.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", car.UserId);
             return View(car);
         }
 
         // GET: Cars/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
             if (id == null || _context.Car == null)
             {
                 return NotFound();
             }
 
-            var car = await _context.Car
-                .Include(c => c.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var car = await _context.Car.FirstOrDefaultAsync(c => c.Id == id && c.UserId == user.Id);
             if (car == null)
             {
                 return NotFound();
@@ -170,6 +188,7 @@ namespace CarTrader.Controllers
         }
 
         // POST: Cars/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -178,7 +197,8 @@ namespace CarTrader.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Car'  is null.");
             }
-            var car = await _context.Car.FindAsync(id);
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var car = await _context.Car.FirstOrDefaultAsync(c => c.Id == id && c.UserId == user.Id);
             if (car != null)
             {
                 _context.Car.Remove(car);
