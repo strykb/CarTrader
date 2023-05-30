@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using CarTrader.Models;
 
 namespace CarTrader.Data
 {
@@ -53,5 +54,6 @@ namespace CarTrader.Data
                 UserId = ADMIN_ID
             });
         }
+        public DbSet<CarTrader.Models.Car>? Car { get; set; }
     }
 }
