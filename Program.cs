@@ -1,4 +1,5 @@
 using CarTrader.Data;
+using CarTrader.Controllers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,8 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddDefaultTokenProviders()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddTransient<AdminController>();
 
 var app = builder.Build();
 
@@ -37,6 +40,10 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "admin",
+    pattern: "admin/{controller=Admin}/{action=UserList}/{id?}");
 
 app.MapControllerRoute(
     name: "default",

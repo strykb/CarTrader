@@ -1,0 +1,70 @@
+﻿@using CarTrader.Models;
+
+@model List<User>
+
+<h2>Lista użytkowników</h2>
+
+<div id="user-list">
+    <h4>Użytkownicy</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nazwa użytkownika</th>
+                <th>Email</th>
+                <th>Akcje</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model.Where(u => !u.IsBlocked))
+            {
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                    <td>
+                    <td>
+                        <a href="@Url.Action("BlockUser", "Admin", new { userId = user.Id })">Zablokuj</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div id="blocked-users" style="display:none;">
+    <h4>Blokowani użytkownicy</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nazwa użytkownika</th>
+                <th>Email</th>
+                <th>Akcje</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model.Where(u => u.IsBlocked))
+            {
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                    <td>
+                        <a href="@Url.Action("UnblockUser", "Admin", new { id = user.Id })">Odblokuj</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script>
+        $(function () {
+            $('#user-list h4').on('click', function () {
+                $(this).next('table').toggle();
+            });
+        });
+    </script>
+}
