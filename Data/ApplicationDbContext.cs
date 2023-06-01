@@ -1,8 +1,8 @@
 ﻿using CarTrader.Models;
+using CarTrader.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using CarTrader.Models;
 
 namespace CarTrader.Data
 {
@@ -13,8 +13,6 @@ namespace CarTrader.Data
         {
         }
 
-        public new DbSet<User> Users { get { return Set<User>(); } }
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -24,14 +22,14 @@ namespace CarTrader.Data
             //seed admin role
             builder.Entity<IdentityRole>().HasData(new IdentityRole
             {
-                Name = "SuperAdmin",
-                NormalizedName = "SUPERADMIN",
+                Name = "Admin",
+                NormalizedName = "ADMIN",
                 Id = ROLE_ID,
                 ConcurrencyStamp = ROLE_ID
             });
 
             //create user
-            var appUser = new IdentityUser
+            var appUser = new User
             {
                 Id = ADMIN_ID,
                 Email = "admin@example.com",
@@ -41,11 +39,11 @@ namespace CarTrader.Data
             };
 
             //set user password
-            PasswordHasher<IdentityUser> ph = new PasswordHasher<IdentityUser>();
-            appUser.PasswordHash = ph.HashPassword(appUser, "qweqwe123");
+            PasswordHasher<User> ph = new PasswordHasher<User>();
+            appUser.PasswordHash = ph.HashPassword(appUser, "qweQWE123!");
 
             //seed user
-            builder.Entity<IdentityUser>().HasData(appUser);
+            builder.Entity<User>().HasData(appUser);
 
             //set user role to admin
             builder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>

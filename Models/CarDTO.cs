@@ -14,14 +14,14 @@ namespace CarTrader.Models
 
         [Display(Name = "Sold at")]
         public DateTime? SoldAt { get; set; }
-        public string Make { get; set; }
-        public string Model { get; set; }
+        public string? Make { get; set; }
+        public string? Model { get; set; }
         [Range(0, 999999999)]
         public int Price { get; set; }
         [Range(1900, 2100)]
         public int Year { get; set; }
         [NotMapped]
         [Display(Name = "Image")]
-        public IFormFile ImageFile { get; set; }
+        public IFormFile? ImageFile { get; set; }
     }
 }

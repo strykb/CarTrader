@@ -16,9 +16,9 @@ namespace CarTrader.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _hostEnvironment;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<User> _userManager;
 
-        public CarsController(ApplicationDbContext context, IWebHostEnvironment hostEnvironment, UserManager<IdentityUser> userManager)
+        public CarsController(ApplicationDbContext context, IWebHostEnvironment hostEnvironment, UserManager<User> userManager)
         {
             _context = context;
             _hostEnvironment = hostEnvironment;

@@ -105,8 +105,8 @@ namespace CarTrader.Data.Migrations
                         {
                             Id = "341743f0-asd2–42de-afbf-59kmkkmk72cf6",
                             ConcurrencyStamp = "341743f0-asd2–42de-afbf-59kmkkmk72cf6",
-                            Name = "SuperAdmin",
-                            NormalizedName = "SUPERADMIN"
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
                         });
                 });
 
@@ -204,23 +204,6 @@ namespace CarTrader.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "1fb10fa8-abd4-453d-9d41-8f02bf492a33",
-                            Email = "admin@example.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            NormalizedUserName = "ADMIN@EXAMPLE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKweejcUCKbcNK8WpF3QsIqzntJktwJv5FwjAhEpHXyw/3vw9lo6uhadX3mllOimmw==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "0def6b66-86d1-4f9c-85ae-f0d0444ea5a5",
-                            TwoFactorEnabled = false,
-                            UserName = "admin@example.com"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -315,6 +298,34 @@ namespace CarTrader.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("CarTrader.Data.User", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<bool>("IsBlocked")
+                        .HasColumnType("bit");
+
+                    b.HasDiscriminator().HasValue("User");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "ca612b73-74fb-4e26-b49a-6073d7bf4ec0",
+                            Email = "admin@example.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedUserName = "ADMIN@EXAMPLE.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAECAuMJGuHu02YzUdsG1DvSRSt36g3k92zQ4jRL4ASk1+xplTNMxLcPMQsSzgKDlqEw==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "70573cda-810b-4f53-9930-1789f4d5741a",
+                            TwoFactorEnabled = false,
+                            UserName = "admin@example.com",
+                            IsBlocked = false
+                        });
+                });
+
             modelBuilder.Entity("CarTrader.Models.Car", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
@@ -324,24 +335,6 @@ namespace CarTrader.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("CarTrader.Models.User", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
-
-                    b.Property<string>("ConfirmPassword")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsBlocked")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasDiscriminator().HasValue("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
