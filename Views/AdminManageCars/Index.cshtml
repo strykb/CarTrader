@@ -35,7 +35,7 @@
         <td class="text-center">
             @if (item.Approved)
             {
-                <span>&check;</span>
+                <span style="color: green;">&check;</span>
             } else {
                 <span>&#10060;</span>
             }
@@ -43,17 +43,35 @@
         <td class="text-center">
             @if (item.Canceled)
             {
-                <span>&check;</span>
+                <span style="color: green;">&check;</span>
             } else {
                 <span>&#10060;</span>
             }
         </td>
         @if (!item.Canceled && !item.Approved)
         {
-            <td><a class="btn btn-sm btn-success" asp-area="" asp-controller="AdminManageCars" asp-action="Approve" asp-route-id="@item.Id">Approve</a></td>
+            <td>
+                <form asp-controller="AdminManageCars" asp-action="Approve" method="POST" asp-route-id="@item.Id">
+                    <input type="hidden" value="@item.Id">
+                    <input type="submit" value="Approve" class="btn btn-sm btn-success">
+                </form>
+            </td>
         } else if (!item.Canceled && item.Approved)
         {
-            <td><a class="btn btn-sm btn-danger" asp-area="" asp-controller="AdminManageCars" asp-action="Cancel" asp-route-id="@item.Id">Cancel</a></td>
+            <td>
+                <form asp-controller="AdminManageCars" asp-action="Cancel" method="POST" asp-route-id="@item.Id">
+                    <input type="hidden" value="@item.Id">
+                    <input type="submit" value="Cancel" class="btn btn-sm btn-danger">
+                </form>
+            </td>
+        }else if (item.Canceled && !item.Approved)
+        {
+            <td>
+                <form asp-controller="AdminManageCars" asp-action="Reset" method="POST" asp-route-id="@item.Id">
+                    <input type="hidden" value="@item.Id">
+                    <input type="submit" value="Reset" class="btn btn-sm btn-warning">
+                </form>
+            </td>
         }
     </tr>
     }
