@@ -52,6 +52,6 @@ namespace CarTrader.Data
                 UserId = ADMIN_ID
             });
         }
-        public DbSet<CarTrader.Models.Car>? Car { get; set; }
+        public DbSet<CarTrader.Models.Car> Car { get; set; }
     }
 }

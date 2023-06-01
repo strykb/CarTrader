@@ -164,7 +164,7 @@ namespace CarTrader.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     PublishedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    SoldAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    SoldAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Make = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Model = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<int>(type: "int", nullable: false),
@@ -172,7 +172,7 @@ namespace CarTrader.Data.Migrations
                     Sold = table.Column<bool>(type: "bit", nullable: false),
                     Approved = table.Column<bool>(type: "bit", nullable: false),
                     Canceled = table.Column<bool>(type: "bit", nullable: false),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -193,7 +193,7 @@ namespace CarTrader.Data.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "IsBlocked", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "02174cf0–9412–4cfe-afbf-59f706d72cf6", 0, "ca612b73-74fb-4e26-b49a-6073d7bf4ec0", "User", "admin@example.com", true, false, false, null, null, "ADMIN@EXAMPLE.COM", "AQAAAAEAACcQAAAAECAuMJGuHu02YzUdsG1DvSRSt36g3k92zQ4jRL4ASk1+xplTNMxLcPMQsSzgKDlqEw==", null, false, "70573cda-810b-4f53-9930-1789f4d5741a", false, "admin@example.com" });
+                values: new object[] { "02174cf0–9412–4cfe-afbf-59f706d72cf6", 0, "4db95500-29be-4ee5-b367-1b2d674cfe87", "User", "admin@example.com", true, false, false, null, null, "ADMIN@EXAMPLE.COM", "AQAAAAEAACcQAAAAEHxaeIiNbYEBjQ1kO3PibbfNSYxdCeTtNtQQleoxYV6+KRQR0LfxkFHxMjHmbFgQcA==", null, false, "11693fef-81ab-40be-8cb1-7b4a460fedb3", false, "admin@example.com" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",

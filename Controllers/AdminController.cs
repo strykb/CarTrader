@@ -20,7 +20,6 @@ namespace CarTrader.Controllers
         }
 
         [HttpGet]
-        [Route("admin/userlist")]
         public IActionResult UserList()
         {
             var users = _userManager.Users.ToList();
@@ -28,7 +27,6 @@ namespace CarTrader.Controllers
         }
 
         [HttpGet]
-        [Route("admin/blocked-users")]
         public IActionResult BlockedUsers()
         {
             var blockedUsers = _userManager.Users.Where(u => u.IsBlocked).ToList();

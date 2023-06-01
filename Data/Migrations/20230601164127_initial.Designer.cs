@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarTrader.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230530214120_initial")]
+    [Migration("20230601164127_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,7 +39,6 @@ namespace CarTrader.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Image")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Make")
@@ -59,7 +58,7 @@ namespace CarTrader.Data.Migrations
                     b.Property<bool>("Sold")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("SoldAt")
+                    b.Property<DateTime>("SoldAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
@@ -300,7 +299,7 @@ namespace CarTrader.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("CarTrader.Data.User", b =>
+            modelBuilder.Entity("CarTrader.Models.User", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
@@ -314,14 +313,14 @@ namespace CarTrader.Data.Migrations
                         {
                             Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ca612b73-74fb-4e26-b49a-6073d7bf4ec0",
+                            ConcurrencyStamp = "4db95500-29be-4ee5-b367-1b2d674cfe87",
                             Email = "admin@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedUserName = "ADMIN@EXAMPLE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAECAuMJGuHu02YzUdsG1DvSRSt36g3k92zQ4jRL4ASk1+xplTNMxLcPMQsSzgKDlqEw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHxaeIiNbYEBjQ1kO3PibbfNSYxdCeTtNtQQleoxYV6+KRQR0LfxkFHxMjHmbFgQcA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "70573cda-810b-4f53-9930-1789f4d5741a",
+                            SecurityStamp = "11693fef-81ab-40be-8cb1-7b4a460fedb3",
                             TwoFactorEnabled = false,
                             UserName = "admin@example.com",
                             IsBlocked = false
@@ -330,7 +329,7 @@ namespace CarTrader.Data.Migrations
 
             modelBuilder.Entity("CarTrader.Models.Car", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                    b.HasOne("CarTrader.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
