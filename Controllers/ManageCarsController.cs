@@ -11,9 +11,9 @@ namespace CarTrader.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _hostEnvironment;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<User> _userManager;
 
-        public ManageCarsController(ApplicationDbContext context, IWebHostEnvironment hostEnvironment, UserManager<IdentityUser> userManager)
+        public ManageCarsController(ApplicationDbContext context, IWebHostEnvironment hostEnvironment, UserManager<User> userManager)
         {
             _context = context;
             _hostEnvironment = hostEnvironment;
@@ -130,6 +130,11 @@ namespace CarTrader.Controllers
             return View(car);
         }
 
+        private bool CarExists(int? id)
+        {
+            throw new NotImplementedException();
+        }
+
         // GET: ManageCars/Delete/5
         [Authorize]
         public async Task<IActionResult> Delete(int? id)
@@ -159,7 +164,7 @@ namespace CarTrader.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Car'  is null.");
             }
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var user = await _userManager.FindByNameAsync(userName: User.Identity.Name);
             var car = await _context.Car.FirstOrDefaultAsync(c => c.Id == id && c.UserId == user.Id);
             if (car != null)
             {

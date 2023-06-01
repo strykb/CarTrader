@@ -22,6 +22,6 @@ namespace CarTrader.Models
         public int Year { get; set; }
         [NotMapped]
         [Display(Name = "Image")]
-        public IFormFile ImageFile { get; set; }
+        public IFormFile? ImageFile { get; set; }
     }
 }

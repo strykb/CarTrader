@@ -1,4 +1,5 @@
-﻿using CarTrader.Models;
+﻿using CarTrader.Data;
+using CarTrader.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 

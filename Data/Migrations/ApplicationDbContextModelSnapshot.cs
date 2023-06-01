@@ -37,7 +37,6 @@ namespace CarTrader.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Image")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Make")
@@ -57,7 +56,7 @@ namespace CarTrader.Data.Migrations
                     b.Property<bool>("Sold")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("SoldAt")
+                    b.Property<DateTime>("SoldAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
@@ -105,8 +104,8 @@ namespace CarTrader.Data.Migrations
                         {
                             Id = "341743f0-asd2–42de-afbf-59kmkkmk72cf6",
                             ConcurrencyStamp = "341743f0-asd2–42de-afbf-59kmkkmk72cf6",
-                            Name = "SuperAdmin",
-                            NormalizedName = "SUPERADMIN"
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
                         });
                 });
 
@@ -145,6 +144,10 @@ namespace CarTrader.Data.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -199,22 +202,7 @@ namespace CarTrader.Data.Migrations
 
                     b.ToTable("AspNetUsers", (string)null);
 
-                    b.HasData(
-                        new
-                        {
-                            Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "1fb10fa8-abd4-453d-9d41-8f02bf492a33",
-                            Email = "admin@example.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            NormalizedUserName = "ADMIN@EXAMPLE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKweejcUCKbcNK8WpF3QsIqzntJktwJv5FwjAhEpHXyw/3vw9lo6uhadX3mllOimmw==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "0def6b66-86d1-4f9c-85ae-f0d0444ea5a5",
-                            TwoFactorEnabled = false,
-                            UserName = "admin@example.com"
-                        });
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -309,9 +297,37 @@ namespace CarTrader.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("CarTrader.Models.User", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<bool>("IsBlocked")
+                        .HasColumnType("bit");
+
+                    b.HasDiscriminator().HasValue("User");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "4db95500-29be-4ee5-b367-1b2d674cfe87",
+                            Email = "admin@example.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedUserName = "ADMIN@EXAMPLE.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHxaeIiNbYEBjQ1kO3PibbfNSYxdCeTtNtQQleoxYV6+KRQR0LfxkFHxMjHmbFgQcA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "11693fef-81ab-40be-8cb1-7b4a460fedb3",
+                            TwoFactorEnabled = false,
+                            UserName = "admin@example.com",
+                            IsBlocked = false
+                        });
+                });
+
             modelBuilder.Entity("CarTrader.Models.Car", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                    b.HasOne("CarTrader.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
