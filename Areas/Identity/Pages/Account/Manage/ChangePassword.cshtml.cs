@@ -86,6 +86,11 @@ namespace CarTrader.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
+            if (user.Email == "admin@example.com" || user.Email == "user@example.com")
+            {
+                return NotFound("You cannot access this page");
+            }
+
             var hasPassword = await _userManager.HasPasswordAsync(user);
             if (!hasPassword)
             {
@@ -106,6 +111,12 @@ namespace CarTrader.Areas.Identity.Pages.Account.Manage
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            if (user.Email == "admin@example.com" || user.Email == "user@example.com")
+            {
+                ModelState.AddModelError(string.Empty, "You cannot change this user's password.");
+                return Page();
             }
 
             var changePasswordResult = await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);

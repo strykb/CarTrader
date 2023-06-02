@@ -77,6 +77,12 @@ namespace CarTrader.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
+            if (user.Email == "admin@example.com" || user.Email == "user@example.com")
+            {
+                ModelState.AddModelError(string.Empty, "This user cannot be deleted.");
+                return Page();
+            }
+
             RequirePassword = await _userManager.HasPasswordAsync(user);
             if (RequirePassword)
             {
