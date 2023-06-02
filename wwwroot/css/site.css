@@ -44,30 +44,43 @@ body {
     transition: background-color 0.3s ease;
 }
 
-    .nav-link:hover {
-        background-color: #ccc;
-    }
+.navbar-icon {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
-    .nav-link i {
-        font-size: 20px;
-        margin-bottom: 5px;
-        transition: transform 0.5s ease;
-    }
-        .nav-link i:hover {
-            transform: scale(1.2);
-        }
+.nav-link:hover {
+    background-color: #ccc;
+}
 
-    .nav-link span {
-        font-size: 14px;
-        text-align: center;
-    }
+.nav-link i {
+    font-size: 20px;
+    margin-bottom: 5px;
+    transition: transform 0.5s ease;
+    width: 16px;
+    height: 16px;
+}
 
-    .nav-link i.fas {
-        border-color: #ffffff;
-    }
+.nav-link i:hover {
+    transform: scale(1.2);
+}
 
-    .nav-link:focus,
-    .nav-link:active {
-        outline: none;
-        box-shadow: none;
-    }
+.nav-link span {
+    font-size: 14px;
+    text-align: center;
+}
+
+.nav-link i.fas {
+    border-color: #ffffff;
+}
+
+.nav-link:focus,
+.nav-link:active {
+    outline: none;
+    box-shadow: none;
+}
+
+.nav-item:not(:last-child) {
+    margin-right: 4px;
+}
