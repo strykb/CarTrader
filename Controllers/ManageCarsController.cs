@@ -112,6 +112,11 @@ namespace CarTrader.Controllers
             car.Price = carDTO.Price;
             car.Sold = carDTO.Sold;
 
+            if (car.Sold)
+            {
+                car.SoldAt = DateTime.Now;
+            }
+
             if (ModelState.IsValid)
             {
                 try
