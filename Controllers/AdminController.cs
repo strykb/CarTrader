@@ -33,5 +33,49 @@ namespace CarTrader.Controllers
             return View(blockedUsers);
         }
 
+        [HttpPost]
+        public IActionResult BlockUser(string userId)
+        {
+            var user = _userManager.FindByIdAsync(userId).Result;
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.IsBlocked = true;
+            var result = _userManager.UpdateAsync(user).Result;
+            if (result.Succeeded)
+            {
+                return RedirectToAction("UserList");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Wystąpił błąd podczas blokowania użytkownika.");
+                return View("UserList");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult UnblockUser(string userId)
+        {
+            var user = _userManager.FindByIdAsync(userId).Result;
+            if (user != null)
+            {
+                user.IsBlocked = false;
+                var result = _userManager.UpdateAsync(user).Result;
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("UserList");
+                }
+                else
+                {
+                    return RedirectToAction("BlockedUsers");
+                }
+            }
+            else
+            {
+                return RedirectToAction("BlockedUsers");
+            }
+        }
     }
 }
