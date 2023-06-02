@@ -48,8 +48,15 @@
                 <span>&#10060;</span>
             }
         </td>
-        <td>@Html.DisplayFor(modelItem => item.SoldAt)</td>
-        <td>            
+                <td>@if (item.Sold)
+                    {
+                        @Html.DisplayFor(modelItem => item.SoldAt)
+                    } else
+                    {
+                        <span>&#10060;</span>
+                    }
+                </td>
+                <td>            
             @if (!item.Sold)
             {
               <a class="btn btn-sm btn-primary" asp-area="" asp-controller="ManageCars" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
