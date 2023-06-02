@@ -65,8 +65,10 @@ namespace CarTrader.Controllers
             if (ModelState.IsValid && acceptedFileExtensions.Contains(extension.ToLower()))
             {
                 // save image
-                string path = Path.Combine(wwwRootPath + "/img/", fileName);
-                using (var fileStream = new FileStream(path, FileMode.Create))
+                string directory = Path.Combine(wwwRootPath + "/img/");
+                Directory.CreateDirectory(directory);
+                string path_to_file = Path.Combine(directory, fileName);
+                using (var fileStream = new FileStream(path_to_file, FileMode.Create))
                 {
                     await carDTO.ImageFile.CopyToAsync(fileStream);
                 }
