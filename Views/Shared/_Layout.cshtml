@@ -14,8 +14,13 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CarTrader.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <header>
@@ -29,37 +34,50 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">
-                                <i class="fas fa-home"></i>
+                            <a class="nav-link text-dark d-flex justify-content-around align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
+                                <i class="fas fa-home me-1"></i>
+                                <span>Home</span>
                             </a>
                         </li>
                         @if (SignInManager.IsSignedIn(User))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="ManageCars" asp-action="Index">
-                                    <i class="fas fa-tasks"></i>
+                                <a class="nav-link text-dark d-flex justify-content-around align-items-center" asp-area="" asp-controller="ManageCars" asp-action="Index">
+                                    <i class="fas fa-tasks me-1"></i>
                                     <span>Manage</span>
                                 </a>
                             </li>
                         }
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Cars" asp-action="Index">
-                                <i class="fas fa-car"></i>
+                            <a class="nav-link text-dark d-flex justify-content-around align-items-center" asp-area="" asp-controller="Cars" asp-action="Index">
+                                <i class="fas fa-car me-1"></i>
                                 <span>Cars</span>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="UserList">
-                                <i class="fas fa-users"></i>
-                                <span>Users</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="BlockedUsers">
-                                <i class="fas fa-user-slash"></i>
-                                <span>Blocked</span>
-                            </a>
-                        </li>
+                        @inject UserManager<User> UserManager
+                        @{
+                            bool isAdmin = User.IsInRole("Admin");
+                        }
+
+                        @if (isAdmin)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark d-flex justify-content-around align-items-center" asp-area="" asp-controller="Admin" asp-action="UserList">
+                                    <i class="fas fa-users me-2"></i>
+                                    <span>Users</span>
+                                </a>
+                            </li>
+                        }
+
+                        @if (isAdmin)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark d-flex justify-content-around align-items-center" asp-area="" asp-controller="Admin" asp-action="BlockedUsers">
+                                    <i class="fas fa-user-slash me-2"></i>
+                                    <span>Blocked</span>
+                                </a>
+                            </li>
+                        }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
