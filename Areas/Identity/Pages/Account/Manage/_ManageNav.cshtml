@@ -10,6 +10,5 @@
     @if (User.Identity.Name != "admin@example.com" && User.Identity.Name != "user@example.com")
     {
     <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Password</a></li>
-    <li class="nav-item"><a id="delete" asp-page="DeletePersonalData" class="nav-link bg-danger text-light">Delete</a></li>
     }
 </ul>

@@ -26,7 +26,7 @@ namespace CarTrader.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            var applicationDbContext = _context.Car.Include(c => c.User);
+            var applicationDbContext = _context.Car.Where(c => c.Sold == false).Include(c => c.User);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -39,7 +39,7 @@ namespace CarTrader.Controllers
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
             var car = await _context.Car.FindAsync(id);
-            if (car == null)
+            if (car == null || car.Sold)
             {
                 return NotFound();
             }
@@ -58,7 +58,7 @@ namespace CarTrader.Controllers
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
             var car = await _context.Car.FindAsync(id);
-            if (car == null)
+            if (car == null || car.Sold)
             {
                 return NotFound();
             }
@@ -78,7 +78,7 @@ namespace CarTrader.Controllers
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
             var car = await _context.Car.FindAsync(id);
-            if (car == null)
+            if (car == null || car.Sold)
             {
                 return NotFound();
             }

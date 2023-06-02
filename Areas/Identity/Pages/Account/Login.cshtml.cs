@@ -118,7 +118,7 @@ namespace CarTrader.Areas.Identity.Pages.Account
                     var user = await _signInManager.UserManager.FindByNameAsync(Input.Email);
                     if (user.IsBlocked)
                     {
-                        // Sign out is user is blocked
+                        // Sign out if user is blocked
                         await _signInManager.SignOutAsync();
                         ModelState.AddModelError(string.Empty, "This user has been blocked");
                         return Page();
