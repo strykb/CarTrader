@@ -115,6 +115,14 @@ namespace CarTrader.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    var user = await _signInManager.UserManager.FindByNameAsync(Input.Email);
+                    if (user.IsBlocked)
+                    {
+                        // Sign out if user is blocked
+                        await _signInManager.SignOutAsync();
+                        ModelState.AddModelError(string.Empty, "This user has been blocked");
+                        return Page();
+                    }
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }

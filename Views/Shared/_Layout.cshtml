@@ -39,6 +39,12 @@
                                 <span>Home</span>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark d-flex justify-content-around align-items-center" asp-area="" asp-controller="Cars" asp-action="Index">
+                                <i class="fas fa-car me-1"></i>
+                                <span>Cars</span>
+                            </a>
+                        </li>
                         @if (SignInManager.IsSignedIn(User))
                         {
                             <li class="nav-item">
@@ -47,36 +53,28 @@
                                     <span>Manage</span>
                                 </a>
                             </li>
-                        }
-                        <li class="nav-item">
-                            <a class="nav-link text-dark d-flex justify-content-around align-items-center" asp-area="" asp-controller="Cars" asp-action="Index">
-                                <i class="fas fa-car me-1"></i>
-                                <span>Cars</span>
-                            </a>
-                        </li>
-                        @inject UserManager<User> UserManager
-                        @{
-                            bool isAdmin = User.IsInRole("Admin");
-                        }
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item ms-auto">
+                                    <a class="nav-link text-dark d-flex justify-content-around align-items-center" asp-area="" asp-controller="AdminManageCars" asp-action="Index">
+                                        <i class="fas fa-car me-2"></i>
+                                        <span>Admin Cars</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark d-flex justify-content-around align-items-center" asp-area="" asp-controller="Admin" asp-action="UserList">
+                                        <i class="fas fa-users me-2"></i>
+                                        <span>Users</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item me-3">
+                                    <a class="nav-link text-dark d-flex justify-content-around align-items-center" asp-area="" asp-controller="Admin" asp-action="BlockedUsers">
+                                        <i class="fas fa-user-slash me-2"></i>
+                                        <span>Blocked</span>
+                                    </a>
+                                </li>
+                            }
 
-                        @if (isAdmin)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark d-flex justify-content-around align-items-center" asp-area="" asp-controller="Admin" asp-action="UserList">
-                                    <i class="fas fa-users me-2"></i>
-                                    <span>Users</span>
-                                </a>
-                            </li>
-                        }
-
-                        @if (isAdmin)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark d-flex justify-content-around align-items-center" asp-area="" asp-controller="Admin" asp-action="BlockedUsers">
-                                    <i class="fas fa-user-slash me-2"></i>
-                                    <span>Blocked</span>
-                                </a>
-                            </li>
                         }
                     </ul>
                     <partial name="_LoginPartial" />

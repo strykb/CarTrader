@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CarTrader.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminManageCarsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -22,67 +23,70 @@ namespace CarTrader.Controllers
 
 
         // GET: AdminManageCars/
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            var applicationDbContext = _context.Car.Include(c => c.User);
+            var applicationDbContext = _context.Car.Where(c => c.Sold == false).Include(c => c.User);
             return View(await applicationDbContext.ToListAsync());
         }
 
-
-        // GET: ManageCars/Edit/5
-        [Authorize]
-        public async Task<IActionResult> Cancel(int? id)
-        {
-            if (id == null || _context.Car == null)
-            {
-                return NotFound();
-            }
-
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            var car = await _context.Car.FirstOrDefaultAsync(c => c.Id == id && c.UserId == user.Id);
-            if (car == null)
-            {
-                return NotFound();
-            }
-            return View(car);
-        }
-        // POST: ManageCars/Edit/5
+        // POST: ManageCars/Approve/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Cancel(int id, [Bind("Id,Make,Model,Price,Sold")] Car car)
+        public async Task<IActionResult> Approve(int id)
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            if (id != car.Id || car.UserId != user.Id)
+            var car = await _context.Car.FindAsync(id);
+            if (car == null || car.Sold)
             {
                 return NotFound();
             }
+            car.Approved = true;
+            _context.Update(car);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
 
-            if (ModelState.IsValid)
+        // POST: ManageCars/Cancel/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Cancel(int id)
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var car = await _context.Car.FindAsync(id);
+            if (car == null || car.Sold)
             {
-                try
-                {
-                    _context.Update(car);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CarExists(car.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            return View(car);
+            car.Approved = false;
+            car.Canceled = true;
+            _context.Update(car);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        // POST: ManageCars/Cancel/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Reset(int id)
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var car = await _context.Car.FindAsync(id);
+            if (car == null || car.Sold)
+            {
+                return NotFound();
+            }
+            car.Approved = false;
+            car.Canceled = false;
+            _context.Update(car);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         private bool CarExists(int? id)

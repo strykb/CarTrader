@@ -22,14 +22,14 @@ namespace CarTrader.Controllers
         [HttpGet]
         public IActionResult UserList()
         {
-            var users = _userManager.Users.ToList();
+            var users = _userManager.Users.Where(u => u.Email != "admin@example.com").ToList();
             return View(users);
         }
 
         [HttpGet]
         public IActionResult BlockedUsers()
         {
-            var blockedUsers = _userManager.Users.Where(u => u.IsBlocked).ToList();
+            var blockedUsers = _userManager.Users.Where(u => u.IsBlocked && u.Email != "admin@example.com").ToList();
             return View(blockedUsers);
         }
 
@@ -37,7 +37,7 @@ namespace CarTrader.Controllers
         public IActionResult BlockUser(string userId)
         {
             var user = _userManager.FindByIdAsync(userId).Result;
-            if (user == null)
+            if (user == null || user.Email == "admin@example.com")
             {
                 return NotFound();
             }

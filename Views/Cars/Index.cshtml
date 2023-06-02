@@ -9,27 +9,25 @@
     ViewData["Title"] = "Cars";
 }
 
-<div class="d-flex justify-content-around align-items-center">
-    <div class="d-flex justify-content-around align-items-center flex-wrap">
-        @foreach (var item in Model) {
-            <div class="card mx-2" style="width: 18rem;">
-                <div class="car-img-container">
-                     <img src="@("/img/" + item.Image)" alt="Card image cap">
-                </div>
-                <div class="card-body">
-                <h5 class="card-title text-center">
-                    @Html.DisplayFor(modelItem => item.Make)
-                    @Html.DisplayFor(modelItem => item.Model)
-                </h5>
-                <div class="d-flex justify-content-between align-items-center">
-                    <p class="card-text">$@Html.DisplayFor(modelItem => item.Price)</p>
-                    <a class="btn btn-success float-end"
-                        asp-area="" asp-controller="Cars"
-                        asp-action="Details" asp-route-id="@item.Id"
-                    >Info</a>
-                </div>
-                </div>
+<div class="d-flex justify-content-start align-items-center flex-wrap gap-2">
+    @foreach (var item in Model) {
+        <div class="card" style="width: 16.5rem;">
+            <div class="car-img-container">
+                    <img src="@("/img/" + item.Image)" alt="Card image cap">
             </div>
-        }
-    </div>
+            <div class="card-body">
+            <h5 class="card-title text-center">
+                @Html.DisplayFor(modelItem => item.Make)
+                @Html.DisplayFor(modelItem => item.Model)
+            </h5>
+            <div class="d-flex justify-content-between align-items-center">
+                <p class="card-text">$@Html.DisplayFor(modelItem => item.Price)</p>
+                <a class="btn btn-success float-end"
+                    asp-area="" asp-controller="Cars"
+                    asp-action="Details" asp-route-id="@item.Id"
+                >Info</a>
+            </div>
+            </div>
+        </div>
+    }
 </div>

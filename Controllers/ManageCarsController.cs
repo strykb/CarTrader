@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace CarTrader.Controllers
 {
@@ -57,6 +58,7 @@ namespace CarTrader.Controllers
                 Make = carDTO.Make,
                 Model = carDTO.Model,
                 Price = carDTO.Price,
+                Year = carDTO.Year,
                 Image = fileName
             };
             string[] acceptedFileExtensions = { ".jpg", ".png", ".jpeg" };
@@ -85,7 +87,7 @@ namespace CarTrader.Controllers
             }
 
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            var car = await _context.Car.FirstOrDefaultAsync(c => c.Id == id && c.UserId == user.Id);
+            var car = await _context.Car.FirstOrDefaultAsync(c => c.Id == id && c.UserId == user.Id && !c.Sold);
             if (car == null)
             {
                 return NotFound();
@@ -99,13 +101,16 @@ namespace CarTrader.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Make,Model,Price,Sold")] Car car)
+        public async Task<IActionResult> Edit(int id, [Bind("Id, Price, Sold, Year")] Car carDTO)
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            if (id != car.Id || car.UserId != user.Id)
+            var car = await _context.Car.FirstOrDefaultAsync(c => c.Id == id);
+            if (car == null || id != carDTO.Id || car.UserId != user.Id)
             {
                 return NotFound();
             }
+            car.Price = carDTO.Price;
+            car.Sold = carDTO.Sold;
 
             if (ModelState.IsValid)
             {
